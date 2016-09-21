@@ -10,6 +10,7 @@ import reactive.model.Message;
 import reactive.model.MessageAcknowledgement;
 import reactive.service.ReactorService;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 public class ReactorController {
@@ -22,7 +23,7 @@ public class ReactorController {
 	}
 
 	@RequestMapping(path = "/handleMessageReactor", method = RequestMethod.POST)
-	public Flux<MessageAcknowledgement> handleMessage(@RequestBody Message message) {
+	public Mono<MessageAcknowledgement> handleMessage(@RequestBody Message message) {
 		return this.aService.handleMessage(message);
 	}
 

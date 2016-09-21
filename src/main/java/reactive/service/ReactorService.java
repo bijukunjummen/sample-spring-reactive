@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactive.model.Message;
 import reactive.model.MessageAcknowledgement;
-import reactor.core.publisher.Flux;
-import reactor.core.tuple.Tuple;
+import reactor.core.publisher.Mono;
+import reactor.util.function.Tuples;
 
 import java.time.Duration;
 
@@ -14,17 +14,18 @@ import java.time.Duration;
 public class ReactorService {
 	private static final Logger logger = LoggerFactory.getLogger(ReactorService.class);
 
-	public Flux<MessageAcknowledgement> handleMessage(Message message) {
-		return Flux.just(message)
+	public Mono<MessageAcknowledgement> handleMessage(Message message) {
+		return Mono
 				.delay(Duration.ofMillis(message.getDelayBy()))
-				.map(msg -> Tuple.of(msg, msg.isThrowException()))
+				.then(Mono.just(message))
+				.map(msg -> Tuples.of(msg, msg.isThrowException()))
 				.flatMap(tup -> {
 					if (tup.getT2()) {
-						return Flux.error(new IllegalStateException("Throwing a deliberate Exception!"));
+						return Mono.error(new IllegalStateException("Throwing a deliberate Exception!"));
 					}
 					Message msg = tup.getT1();
-					return Flux.just(new MessageAcknowledgement(msg.getId(), msg.getPayload(), "Response from ReactorService"));
-				});
+					return Mono.just(new MessageAcknowledgement(msg.getId(), msg.getPayload(), "Response from ReactorService"));
+				}).single();
 	}
 
 }

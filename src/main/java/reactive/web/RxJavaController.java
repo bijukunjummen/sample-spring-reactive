@@ -10,6 +10,7 @@ import reactive.model.Message;
 import reactive.model.MessageAcknowledgement;
 import reactive.service.RxJavaService;
 import rx.Observable;
+import rx.Single;
 
 @RestController
 public class RxJavaController {
@@ -22,7 +23,7 @@ public class RxJavaController {
 	}
 
 	@RequestMapping(path = "/handleMessageRxJava", method = RequestMethod.POST)
-	public Observable<MessageAcknowledgement> handleMessage(@RequestBody Message message) {
+	public Single<MessageAcknowledgement> handleMessage(@RequestBody Message message) {
 		System.out.println("Got Message..");
 		return this.aService.handleMessage(message);
 	}
