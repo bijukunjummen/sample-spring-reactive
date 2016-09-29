@@ -24,8 +24,12 @@ public class RxJavaController {
 
 	@RequestMapping(path = "/handleMessageRxJava", method = RequestMethod.POST)
 	public Single<MessageAcknowledgement> handleMessage(@RequestBody Message message) {
-		System.out.println("Got Message..");
-		return this.aService.handleMessage(message);
+		return this.aService.handleMessageSingle(message);
+	}
+
+	@RequestMapping(path = "/handleMessageRxJavaObs", method = RequestMethod.POST)
+	public Observable<MessageAcknowledgement> handleMessageObs(@RequestBody Message message) {
+		return this.aService.handleMessageObservable(message);
 	}
 
 }

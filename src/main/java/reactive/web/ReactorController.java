@@ -24,7 +24,12 @@ public class ReactorController {
 
 	@RequestMapping(path = "/handleMessageReactor", method = RequestMethod.POST)
 	public Mono<MessageAcknowledgement> handleMessage(@RequestBody Message message) {
-		return this.aService.handleMessage(message);
+		return this.aService.handleMessageMono(message);
+	}
+
+	@RequestMapping(path = "/handleMessageReactorFlux", method = RequestMethod.POST)
+	public Flux<MessageAcknowledgement> handleMessageFlux(@RequestBody Message message) {
+		return this.aService.handleMessageFlux(message);
 	}
 
 }

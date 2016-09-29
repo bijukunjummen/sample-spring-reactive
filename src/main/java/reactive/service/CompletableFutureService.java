@@ -21,6 +21,9 @@ public class CompletableFutureService {
 		return CompletableFuture.supplyAsync(() -> {
 			logger.info("Start: Executing slow task in CompletableFutureService");
 			Util.delay(message.getDelayBy());
+			if (message.isThrowException()) {
+				throw new RuntimeException("Throwing a deliberate Exception!");
+			}
 			logger.info("End: Executing slow task in CompletableFutureService");
 			return new MessageAcknowledgement(message.getId(), message.getPayload(), "data from CompletableFutureService");
 		}, futureExecutor);
