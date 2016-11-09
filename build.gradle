@@ -33,6 +33,7 @@ repositories {
 dependencies {
 	compile('org.springframework.boot.experimental:spring-boot-starter-web-reactive')
 	compile('io.reactivex:rxjava')
+	compile('io.projectreactor.addons:reactor-test:1.0.0.BUILD-SNAPSHOT')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
