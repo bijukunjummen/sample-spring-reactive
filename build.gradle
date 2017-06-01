@@ -1,6 +1,7 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+		kotlinVersion = '1.1.2'
+		springBootVersion = '2.0.0.M1'
 	}
 	repositories {
 		mavenCentral()
@@ -9,19 +10,31 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion")
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'kotlin-jpa'
 
 jar {
 	baseName = 'sample-spring-reactive'
-	version = '1.0.0-SNAPSHOT'
+	version = '0.0.3-SNAPSHOT'
+}
+
+compileKotlin {
+	kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+	kotlinOptions.jvmTarget = "1.8"
 }
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
@@ -31,14 +44,9 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot.experimental:spring-boot-starter-web-reactive')
-	compile('io.reactivex:rxjava')
-	compile('io.projectreactor.addons:reactor-test:1.0.0.BUILD-SNAPSHOT')
+	compile('org.springframework.boot:spring-boot-starter-webflux')
+	compile("io.reactivex:rxjava")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.boot.experimental:spring-boot-dependencies-web-reactive:0.1.0.BUILD-SNAPSHOT"
-	}
+	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
+	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
 }
